@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Indian Stock Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.cdnjs.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --accent: #1765cc;
+            --background: #f8f9fa;
+            --light: #ffffff;
+            --dark: #2b2b2b;
+        }
+
+        body {
+            background-color: var(--background);
+            font-family: 'Poppins', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+            background-image: linear-gradient(135deg, #f8f9fa 0%, #e9f0ff 100%);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--light);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background-color: var(--primary);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: none;
+        }
+
+        .logo-area {
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .login-title {
+            color: white;
+            margin: 5px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            animation: slideInRight 0.5s ease forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .app-tagline {
+            color: white;
+            font-size: 0.95rem;
+            opacity: 0;
+            animation: slideInRight 0.5s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .login-form {
+            padding: 30px;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: fadeInLeft 0.5s ease forwards;
+        }
+
+        .form-floating:nth-child(1) {
+            animation-delay: 0.6s;
+        }
+
+        .form-floating:nth-child(2) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-control {
+            background-color: #ffffff;
+            color: var(--dark);
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+            background-color: #ffffff;
+            color: var(--dark);
+        }
+
+        .form-floating label {
+            color: #5f6368;
+            padding: 12px;
+        }
+
+        .btn-login {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            letter-spacing: 0.3px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-login:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .invalid-feedback {
+            font-size: 80%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #5f6368;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .alert {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+            20%, 80% {
+                transform: translate3d(2px, 0, 0);
+            }
+            30%, 50%, 70% {
+                transform: translate3d(-3px, 0, 0);
+            }
+            40%, 60% {
+                transform: translate3d(3px, 0, 0);
+            }
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            background-color: #f8faff;
+            border: 1px solid #e9f0ff;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .social-btn.google { color: #DB4437; }
+        .social-btn.facebook { color: #4267B2; }
+        .social-btn.apple { color: #000000; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 25px 0;
+            color: #5f6368;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 1.1s;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .divider::before {
+            margin-right: 10px;
+        }
+
+        .divider::after {
+            margin-left: 10px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 1.3s;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #5f6368;
+            font-size: 0.85rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        /* Glowing effect for focused input */
+        .form-control:focus {
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 2px rgba(26, 115, 232, 0.2);
+            }
+            to {
+                box-shadow: 0 0 6px rgba(26, 115, 232, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-area">
+                <i class="fas fa-chart-line fa-2x"></i>
+            </div>
+            <h3 class="login-title">StockPredict</h3>
+            <p class="app-tagline">AI-powered stock analysis & prediction</p>
+        </div>
+
+        <div class="login-form">
+            {% if error %}
+                <div class="alert alert-danger mb-4">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="/login" id="loginForm">
+                <div class="form-floating position-relative">
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Username" required autofocus>
+                    <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                    <div class="invalid-feedback" id="username-feedback"></div>
+                </div>
+
+                <div class="form-floating position-relative">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                    <button type="button" class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+                    </button>
+                    <div class="invalid-feedback" id="password-feedback"></div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-login" id="loginButton">
+                        <span class="loading" id="loadingSpinner"></span>
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </button>
+                </div>
+            </form>
+
+            <div class="divider">OR</div>
+            
+            <div class="social-login">
+                <a href="#" class="social-btn google">
+                    <i class="fab fa-google fa-lg"></i>
+                </a>
+                <a href="#" class="social-btn facebook">
+                    <i class="fab fa-facebook-f fa-lg"></i>
+                </a>
+                <a href="#" class="social-btn apple">
+                    <i class="fab fa-apple fa-lg"></i>
+                </a>
+            </div>
+            
+            <div class="register-link">
+                Don't have an account? <a href="/register">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 StockPredict | All rights reserved</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const loginButton = document.getElementById('loginButton');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Password toggle functionality
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                eyeIcon.classList.toggle('fa-eye');
+                eyeIcon.classList.toggle('fa-eye-slash');
+            });
+
+            // Form validation
+            const loginForm = document.getElementById('loginForm');
+            const username = document.getElementById('username');
+            const usernameFeedback = document.getElementById('username-feedback');
+            const passwordFeedback = document.getElementById('password-feedback');
+
+            loginForm.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                if (username.value.trim() === '') {
+                    username.classList.add('is-invalid');
+                    usernameFeedback.textContent = 'Username cannot be empty';
+                    isValid = false;
+                } else {
+                    username.classList.remove('is-invalid');
+                }
+
+                if (password.value.trim() === '') {
+                    password.classList.add('is-invalid');
+                    passwordFeedback.textContent = 'Password cannot be empty';
+                    isValid = false;
+                } else if (password.value.length < 6) {
+                    password.classList.add('is-invalid');
+                    passwordFeedback.textContent = 'Password must be at least 6 characters long';
+                    isValid = false;
+                } else {
+                    password.classList.remove('is-invalid');
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                } else {
+                    // Show loading spinner
+                    loadingSpinner.style.display = 'inline-block';
+                    loginButton.querySelector('i').style.display = 'none';
+                    loginButton.querySelector('.me-2').style.marginRight = '0';
+                    
+                    // Disable button to prevent multiple submissions
+                    loginButton.disabled = true;
+                    
+                    // We're allowing the form to submit naturally here
+                }
+            });
+            
+            // Focus animation
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+        });
+
+        // Add ripple effect to buttons
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.offsetLeft - diameter / 2}px`;
+            circle.style.top = `${event.clientY - button.offsetTop - diameter / 2}px`;
+            circle.classList.add('ripple');
+            
+            const ripple = button.querySelector('.ripple');
+            if (ripple) {
+                ripple.remove();
+            }
+            
+            button.appendChild(circle);
+        }
+
+        const buttons = document.querySelectorAll('.btn, .social-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', createRipple);
+        });
+    </script>
+</body>
+</html>
